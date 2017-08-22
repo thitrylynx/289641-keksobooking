@@ -1,10 +1,47 @@
 'use strict';
-// константы
-var AVATAR_NUMBERS = ['01','02','03', '04', '05', '06', '07', '08'];
-var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-var TYPES = ['flat', 'house', 'bungalo'];
-var TIME = ['12:00', '13:00', '14:00'];
-var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+
+var AVATAR_NUMBERS = [
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '07',
+  '08'
+];
+var TITLES = [
+  'Большая уютная квартира',
+  'Маленькая неуютная квартира',
+  'Огромный прекрасный дворец',
+  'Маленький ужасный дворец',
+  'Красивый гостевой домик',
+  'Некрасивый негостеприимный домик',
+  'Уютное бунгало далеко от моря',
+  'Неуютное бунгало по колено в воде'
+];
+var TYPES = [
+  'flat',
+  'house',
+  'bungalo'
+];
+var TIME = [
+  '12:00',
+  '13:00',
+  '14:00'
+];
+var FEATURES = [
+  'wifi',
+  'dishwasher',
+  'parking',
+  'washer',
+  'elevator',
+  'conditioner'
+];
+var PIN_WIDTH = 40;
+var PIN_HEIGHT = 40;
+
+
 
 var compareRandom = function(a, b) {
   return Math.random() - 0.5;
@@ -37,7 +74,7 @@ var getRandomLength = function () {
   return randomLengthArr;
 };
 
-var realty = [
+var offer = [
   // 1-ый элемент
   {
     author: {
@@ -224,4 +261,26 @@ var realty = [
   }
 ];
 
+var pinMap = document.querySelector('.tokyo__pin-map');
+var fragment = document.createDocumentFragment();
 
+var renderFragmentPinMap = function (object, element) {
+  for(var k = 0; k < 8; k++){
+    var newElement = document.createElement('div');
+    var imgElement = document.createElement('img');
+
+    newElement.classList.add('pin');
+    newElement.style.left = object[k].location.x + PIN_WIDTH / 2 + 'px';
+    newElement.style.top = object[k].location.y + PIN_HEIGHT + 'px';
+
+    imgElement.classList.add('rounded');
+    imgElement.style.width = PIN_WIDTH + 'px';
+    imgElement.style.height = PIN_HEIGHT + 'px';
+    imgElement.setAttribute('src', object[k].author.avatar);
+
+    element.appendChild(newElement);
+    newElement.appendChild(imgElement);
+  }
+};
+renderFragmentPinMap(offer, fragment);
+pinMap.appendChild(fragment);
