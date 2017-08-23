@@ -41,6 +41,8 @@ var FEATURES = [
 ];
 var PIN_WIDTH = 40;
 var PIN_HEIGHT = 40;
+var LOCATION_X = getRandomInt(300, 900);
+var LOCATION_Y = getRandomInt(100, 500);
 
 var compareRandom = function(a, b) {
   return Math.random() - 0.5;
@@ -55,6 +57,7 @@ var renderRandomNumber = function (value) {
 
 AVATAR_NUMBERS.sort(compareRandom);
 TITLES.sort(compareRandom);
+
 var popNumber = function () {
   var popedAvatar = AVATAR_NUMBERS.pop();
   return popedAvatar;
@@ -63,7 +66,6 @@ var popTitle = function () {
   var popedTitle = TITLES.pop();
   return popedTitle;
 };
-
 var getRandomLength = function () {
   var randomLengthArr = [];
   var randomLength = getRandomInt(1, 6);
@@ -72,6 +74,7 @@ var getRandomLength = function () {
   }
   return randomLengthArr;
 };
+
 for(var j = 0; j < 8; j++) {
   OFFERS.push({
     author: {
@@ -79,7 +82,7 @@ for(var j = 0; j < 8; j++) {
     },
     offer: {
       title: popTitle(),
-      address: '',
+      address: locationX + ', ' + locationY,
       price: getRandomInt(1000, 1000000),
       type: TYPES[renderRandomNumber(TYPES)],
       rooms: getRandomInt(1, 5),
@@ -91,29 +94,25 @@ for(var j = 0; j < 8; j++) {
       photos: ''
     },
     location: {
-      x: getRandomInt(300, 900),
-      y: getRandomInt(100, 500)
+      x: LOCATION_X,
+      y: LOCATION_Y
     }
   });
 }
 
 var pinMap = document.querySelector('.tokyo__pin-map');
 var fragmentPin = document.createDocumentFragment();
-
 var renderFragmentPinMap = function (object, element) {
   for(var k = 0; k < 8; k++){
     var newElement = document.createElement('div');
     var imgElement = document.createElement('img');
-
     newElement.classList.add('pin');
     newElement.style.left = object[k].location.x + PIN_WIDTH / 2 + 'px';
     newElement.style.top = object[k].location.y + PIN_HEIGHT + 'px';
-
     imgElement.classList.add('rounded');
     imgElement.style.width = PIN_WIDTH + 'px';
     imgElement.style.height = PIN_HEIGHT + 'px';
     imgElement.setAttribute('src', object[k].author.avatar);
-
     element.appendChild(newElement);
     newElement.appendChild(imgElement);
   }
@@ -123,10 +122,8 @@ pinMap.appendChild(fragmentPin);
 
 var offerPanel = document.getElementById('offer-dialog');
 var offerPanelTemplate = document.getElementById('lodge-template').content;
-
 var renderOfferPanel = function (offer) {
   var panelElement = offerPanelTemplate.cloneNode(true);
-
   var fragmentFeature = document.createDocumentFragment();
   for(var l = 0; l < offer.features.length; l++) {
     var feature = document.createElement('span');
