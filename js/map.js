@@ -42,10 +42,10 @@ var FEATURES = [
 var PIN_WIDTH = 40;
 var PIN_HEIGHT = 40;
 
-var compareRandom = function(a, b) {
+var compareRandom = function () {
   return Math.random() - 0.5;
 };
-var getRandomInt = function (min, max){
+var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 var renderRandomNumber = function (value) {
@@ -67,12 +67,11 @@ var getRandomLength = function () {
   var randomLengthArr = [];
   var randomLength = getRandomInt(1, 6);
   for (var i = 0; i < randomLength; i++) {
-  randomLengthArr[i] = FEATURES[i];
+    randomLengthArr[i] = FEATURES[i];
   }
   return randomLengthArr;
 };
-var loacationX = getRandomInt(300, 900);
-for(var j = 0; j < 8; j++) {
+for (var j = 0; j < 8; j++) {
   var LOCATION_X = getRandomInt(300, 900);
   var LOCATION_Y = getRandomInt(100, 500);
   OFFERS.push({
@@ -102,7 +101,7 @@ for(var j = 0; j < 8; j++) {
 var pinMap = document.querySelector('.tokyo__pin-map');
 var fragmentPin = document.createDocumentFragment();
 var renderFragmentPinMap = function (object, element) {
-  for (var k = 0; k < 8; k++){
+  for (var k = 0; k < 8; k++) {
     var newElement = document.createElement('div');
     var imgElement = document.createElement('img');
 
@@ -125,7 +124,7 @@ var offerPanelTemplate = document.getElementById('lodge-template').content;
 var renderOfferPanel = function (offer) {
   var panelElement = offerPanelTemplate.cloneNode(true);
   var fragmentFeature = document.createDocumentFragment();
-  for(var l = 0; l < offer.features.length; l++) {
+  for (var l = 0; l < offer.features.length; l++) {
     var feature = document.createElement('span');
     feature.className = 'feature__image feature__image--' + offer.features[l];
     fragmentFeature.appendChild(feature);
