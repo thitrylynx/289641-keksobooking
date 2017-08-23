@@ -41,8 +41,6 @@ var FEATURES = [
 ];
 var PIN_WIDTH = 40;
 var PIN_HEIGHT = 40;
-var LOCATION_X = getRandomInt(300, 900);
-var LOCATION_Y = getRandomInt(100, 500);
 
 var compareRandom = function(a, b) {
   return Math.random() - 0.5;
@@ -54,7 +52,6 @@ var renderRandomNumber = function (value) {
   var valueResult = Math.floor(Math.random() * (value.length));
   return valueResult;
 };
-
 AVATAR_NUMBERS.sort(compareRandom);
 TITLES.sort(compareRandom);
 
@@ -74,15 +71,17 @@ var getRandomLength = function () {
   }
   return randomLengthArr;
 };
-
+var loacationX = getRandomInt(300, 900);
 for(var j = 0; j < 8; j++) {
+  var LOCATION_X = getRandomInt(300, 900);
+  var LOCATION_Y = getRandomInt(100, 500);
   OFFERS.push({
     author: {
       avatar: './img/avatars/user' + popNumber() + '.png'
     },
     offer: {
       title: popTitle(),
-      address: locationX + ', ' + locationY,
+      address: LOCATION_X + ', ' + LOCATION_Y,
       price: getRandomInt(1000, 1000000),
       type: TYPES[renderRandomNumber(TYPES)],
       rooms: getRandomInt(1, 5),
@@ -103,9 +102,10 @@ for(var j = 0; j < 8; j++) {
 var pinMap = document.querySelector('.tokyo__pin-map');
 var fragmentPin = document.createDocumentFragment();
 var renderFragmentPinMap = function (object, element) {
-  for(var k = 0; k < 8; k++){
+  for (var k = 0; k < 8; k++){
     var newElement = document.createElement('div');
     var imgElement = document.createElement('img');
+
     newElement.classList.add('pin');
     newElement.style.left = object[k].location.x + PIN_WIDTH / 2 + 'px';
     newElement.style.top = object[k].location.y + PIN_HEIGHT + 'px';
