@@ -174,7 +174,7 @@ var renderOfferPanel = function (offer) {
 
 renderFragmentPinMap(OFFERS);
 
-// ЗАДАНИЕ  #11
+// ЗАДАНИЕ #11
 
 var offerPanel = document.getElementById('offer-dialog');
 var offerPanelClose = document.querySelector('.dialog__close');
