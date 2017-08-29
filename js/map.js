@@ -174,3 +174,61 @@ var renderOfferPanel = function (offer) {
 
 renderFragmentPinMap(OFFERS);
 
+// ЗАДАНИЕ  #11
+
+var offerPanel = document.getElementById('offer-dialog');
+var offerPanelClose = document.querySelector('.dialog__close');
+var pinMap = document.querySelector('.tokyo__pin-map');
+var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
+
+
+// функция удаления класса
+var removeClass = function (elements, className) {
+  elements.forEach(function (element) {
+    if (element.classList.contains(className)) {
+      element.classList.remove(className);
+    }
+  });
+};
+
+// функция добавления класса активного элемента при нажатии на маркер
+var renderOffer = function (evt) {
+  var pinsArray = Array.prototype.slice.call(pins);
+  removeClass(pins, 'pin--active');
+  var target = evt.currentTarget;
+  target.classList.add('pin--active');
+  var activePinNumber = pinsArray.indexOf(target);
+  offerPanel.classList.remove('hidden');
+  openDialog(activePinNumber);
+};
+
+// функция подсветки активного маркера при клике (enter)
+var pinActivate = function (evt) {
+  if (evt.keyCode === KEY_CODES.ENTER || evt.type === EVENT_TYPES.CLICK) {
+    renderOffer(evt);
+  }
+};
+
+// функция открытия объявления
+var openDialog = function (activePinNumber) {
+  offerPanel.appendChild(renderOfferPanel(OFFERS[activePinNumber]));
+  offerPanel.replaceChild(fragmentPanel, offerPanel.children[1]);
+};
+
+// функция закрытия объявления и удаления подсветки маркера
+var pinDeactivate = function (evt) {
+  if (evt.keyCode === KEY_CODES.ESC || evt.type === EVENT_TYPES.CLICK) {
+    offerPanel.classList.add('hidden');
+    removeClass(pins, 'pin--active');
+  }
+};
+
+// показать объяления
+for (var i = 0; i < pins.length; i++) {
+  pins[i].addEventListener(EVENT_TYPES.CLICK, pinActivate);
+  pins[i].addEventListener(EVENT_TYPES.KEYDOWN, pinActivate);
+}
+
+// скрыть объявления
+offerPanelClose.addEventListener(EVENT_TYPES.CLICK, pinDeactivate);
+document.body.addEventListener(EVENT_TYPES.KEYDOWN, pinDeactivate);
