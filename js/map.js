@@ -1,6 +1,5 @@
 'use strict';
 
-
 var AVATAR_NUMBERS = [
   '01',
   '02',
@@ -93,7 +92,6 @@ var getRandomType = function (array) {
   return typeName;
 };
 
-
 // функция создания массива случайных объявлений
 var getRandomDialogsArr = function (length) {
   var array = [];
@@ -180,7 +178,6 @@ var offerPanel = document.getElementById('offer-dialog');
 var offerPanelClose = document.querySelector('.dialog__close');
 var pinMap = document.querySelector('.tokyo__pin-map');
 var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
-
 
 // функция удаления класса
 var removeClass = function (elements, className) {
@@ -270,8 +267,6 @@ var type = document.getElementById('type');
 var description = document.getElementById('description');
 var capacity = document.getElementById('capacity');
 var roomNumber = document.getElementById('room_number');
-
-
 var setDefaultSettings = function () {
   form.reset();
   title.value = '';
@@ -336,13 +331,11 @@ var dynamicCorrectCapacity = function (element1, element2) {
     }
   });
 };
-
 dynamicCorrectInputs(timeIn, timeOut);
 dynamicCorrectInputs(timeOut, timeIn);
 dynamicCorrectPrice(type, price);
 dynamicCorrectCapacity(roomNumber, capacity);
 dynamicCorrectRooms(capacity, roomNumber);
-
 title.addEventListener('input', function (evt) {
   var target = evt.target;
   if (target.value.length < SYMBOLS.MIN) {
@@ -363,7 +356,6 @@ address.addEventListener('input', function (evt) {
     address.style.borderColor = '';
   }
 });
-
 price.addEventListener('input', function (evt) {
   var target = evt.target;
   if (target.value.length < 1) {
@@ -378,4 +370,3 @@ price.addEventListener('input', function (evt) {
   }
 });
 setDefaultSettings();
-
