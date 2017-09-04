@@ -387,6 +387,10 @@ select option:hover {
     display: block;
 }
 
+.form__element--wide input:invalid {
+  border-color: red;
+}
+
 .form__element--wide input {
     width: 100%;
     display: block;
