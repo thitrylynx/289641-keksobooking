@@ -115,53 +115,7 @@ var PIN_HEIGHT = 40;
   window.data = OFFERS;
 })();
 
-// ------------PIN ---------------------------
-(function () {
-  var KEY_CODES = {
-    ENTER: 13,
-    ESC: 27
-  };
-  var EVENT_TYPES = {
-    CLICK: 'click',
-    KEYDOWN: 'keydown'
-  };
-  var fragmentPin = document.createDocumentFragment();
-  // функция отрисовки маркеров
-  var renderFragmentPinMap = function (objects) {
-    for (var k = 0; k < window.data.length; k++) {
-      var newElement = document.createElement('div');
-      var imgElement = document.createElement('img');
-      var offer = objects[k];
 
-      newElement.classList.add('pin');
-      newElement.style.left = (offer.location.x - PIN_WIDTH / 2) + 'px';
-      newElement.style.top = (offer.location.y + PIN_HEIGHT) + 'px';
-      imgElement.classList.add('rounded');
-      imgElement.style.width = PIN_WIDTH + 'px';
-      imgElement.style.height = PIN_HEIGHT + 'px';
-      imgElement.setAttribute('src', offer.author.avatar);
-      imgElement.setAttribute('tabindex', '0');
-      fragmentPin.appendChild(newElement);
-      newElement.appendChild(imgElement);
-    }
-    document.querySelector('.tokyo__pin-map').appendChild(fragmentPin);
-  };
-
-  // функция подсветки активного маркера при клике (enter)
-  var pinActivate = function (evt) {
-    if (evt.keyCode === KEY_CODES.ENTER || evt.type === EVENT_TYPES.CLICK) {
-      renderOffer(evt);
-    }
-  };
-
-  // функция закрытия объявления и удаления подсветки маркера
-  var pinDeactivate = function (evt) {
-    if (evt.keyCode === KEY_CODES.ESC || evt.type === EVENT_TYPES.CLICK) {
-      offerPanel.classList.add('hidden');
-      removeClass(pins, 'pin--active');
-    }
-  };
-})();
 
 // ----------------------END
 
@@ -193,9 +147,57 @@ var renderOfferPanel = function (offer) {
   return panelElement;
 };
 
-renderFragmentPinMap(window.data);
+window.pin.render(window.data);
 
 // --------------END
+
+// ------------PIN ---------------------------
+(function () {
+  var KEY_CODES = {
+    ENTER: 13,
+    ESC: 27
+  };
+  var EVENT_TYPES = {
+    CLICK: 'click',
+    KEYDOWN: 'keydown'
+  };
+  window.pin = {
+    render: function (objects) {
+      var fragmentPin = document.createDocumentFragment();
+      for (var k = 0; k < window.data.length; k++) {
+        var newElement = document.createElement('div');
+        var imgElement = document.createElement('img');
+        var offer = objects[k];
+
+        newElement.classList.add('pin');
+        newElement.style.left = (offer.location.x - PIN_WIDTH / 2) + 'px';
+        newElement.style.top = (offer.location.y + PIN_HEIGHT) + 'px';
+        imgElement.classList.add('rounded');
+        imgElement.style.width = PIN_WIDTH + 'px';
+        imgElement.style.height = PIN_HEIGHT + 'px';
+        imgElement.setAttribute('src', offer.author.avatar);
+        imgElement.setAttribute('tabindex', '0');
+        fragmentPin.appendChild(newElement);
+        newElement.appendChild(imgElement);
+      }
+      document.querySelector('.tokyo__pin-map').appendChild(fragmentPin);
+    }
+  };
+  // функция подсветки активного маркера при клике (enter)
+  var pinActivate = function (evt) {
+    if (evt.keyCode === KEY_CODES.ENTER || evt.type === EVENT_TYPES.CLICK) {
+      renderOffer(evt);
+    }
+  };
+
+  // функция закрытия объявления и удаления подсветки маркера
+  var pinDeactivate = function (evt) {
+    if (evt.keyCode === KEY_CODES.ESC || evt.type === EVENT_TYPES.CLICK) {
+      offerPanel.classList.add('hidden');
+      removeClass(pins, 'pin--active');
+    }
+  };
+})();
 
 // ---------------------MAP-------------------
 (function () {
