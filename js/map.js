@@ -117,6 +117,14 @@ var PIN_HEIGHT = 40;
 
 // ------------PIN ---------------------------
 (function () {
+  var KEY_CODES = {
+    ENTER: 13,
+    ESC: 27
+  };
+  var EVENT_TYPES = {
+    CLICK: 'click',
+    KEYDOWN: 'keydown'
+  };
   var fragmentPin = document.createDocumentFragment();
   // функция отрисовки маркеров
   var renderFragmentPinMap = function (objects) {
@@ -137,6 +145,21 @@ var PIN_HEIGHT = 40;
       newElement.appendChild(imgElement);
     }
     document.querySelector('.tokyo__pin-map').appendChild(fragmentPin);
+  };
+
+  // функция подсветки активного маркера при клике (enter)
+  var pinActivate = function (evt) {
+    if (evt.keyCode === KEY_CODES.ENTER || evt.type === EVENT_TYPES.CLICK) {
+      renderOffer(evt);
+    }
+  };
+
+  // функция закрытия объявления и удаления подсветки маркера
+  var pinDeactivate = function (evt) {
+    if (evt.keyCode === KEY_CODES.ESC || evt.type === EVENT_TYPES.CLICK) {
+      offerPanel.classList.add('hidden');
+      removeClass(pins, 'pin--active');
+    }
   };
 })();
 
@@ -176,10 +199,6 @@ renderFragmentPinMap(window.data);
 
 // ---------------------MAP-------------------
 (function () {
-  var KEY_CODES = {
-    ENTER: 13,
-    ESC: 27
-  };
   var EVENT_TYPES = {
     CLICK: 'click',
     KEYDOWN: 'keydown'
@@ -208,12 +227,6 @@ renderFragmentPinMap(window.data);
     openDialog(activePinNumber);
   };
 
-  // функция подсветки активного маркера при клике (enter)
-  var pinActivate = function (evt) {
-    if (evt.keyCode === KEY_CODES.ENTER || evt.type === EVENT_TYPES.CLICK) {
-      renderOffer(evt);
-    }
-  };
 
   // функция открытия объявления
   var openDialog = function (activePinNumber) {
@@ -221,13 +234,6 @@ renderFragmentPinMap(window.data);
     offerPanel.replaceChild(fragmentPanel, offerPanel.children[1]);
   };
 
-  // функция закрытия объявления и удаления подсветки маркера
-  var pinDeactivate = function (evt) {
-    if (evt.keyCode === KEY_CODES.ESC || evt.type === EVENT_TYPES.CLICK) {
-      offerPanel.classList.add('hidden');
-      removeClass(pins, 'pin--active');
-    }
-  };
 
   // показать объяления
   for (var i = 0; i < pins.length; i++) {
