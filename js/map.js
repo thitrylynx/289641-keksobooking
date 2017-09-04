@@ -1,6 +1,5 @@
 'use strict';
 
-
 var AVATAR_NUMBERS = [
   '01',
   '02',
