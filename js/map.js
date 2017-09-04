@@ -352,8 +352,7 @@ title.addEventListener('input', function (evt) {
   } else {
     target.setCustomValidity('');
   }
-});
-        
+});      
 address.addEventListener('input', function (evt) {
   var target = evt.target;
   if (target.value.length < 1) {
