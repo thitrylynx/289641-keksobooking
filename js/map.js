@@ -17,6 +17,14 @@
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
   var pinMain = pinMap.querySelector('.pin__main');
+  var address = document.getElementById('address');
+  var addressInput = function () {
+    var pinCoords = {
+      x: (pinMain.offsetLeft + Math.floor(pinMain.offsetWidth / 2)),
+      y: (pinMain.offsetTop + pinMain.offsetTop)
+    };
+    address.value = 'x: ' + pinCoords.x + ', ' + 'y: ' + pinCoords.y;
+  };
   pinMain.addEventListener(EVENT_TYPES.MOUSEDOWN, function (evt) {
     evt.preventDefault();
 
@@ -27,7 +35,7 @@
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-
+      addressInput();
       var shift = {
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
@@ -37,14 +45,28 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-
-      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
-      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      // проверка
+      var totalCoordsY = pinMain.offsetTop - shift.y;
+      var totalCoordsX = pinMain.offsetLeft - shift.x;
+      var checkCoordsY = function () {
+        if (totalCoordsY < 100) {
+          totalCoordsY = 100;
+        } else if (totalCoordsY > 570) {
+          totalCoordsY = 570;
+        } return totalCoordsY;
+      };
+      var checkCoordsX = function () {
+        if (totalCoordsX < 0) {
+          totalCoordsX = 0;
+        } else if (totalCoordsX > 1130) {
+          totalCoordsX = 1130;
+        } return totalCoordsX;
+      };
+      pinMain.style.top = checkCoordsY() + 'px';
+      pinMain.style.left = checkCoordsX() + 'px';
     };
-
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-
       document.removeEventListener(EVENT_TYPES.MOUSEMOVE, onMouseMove);
       document.removeEventListener(EVENT_TYPES.MOUSEUP, onMouseUp);
     };
