@@ -3,7 +3,10 @@
 (function () {
   var EVENT_TYPES = {
     CLICK: 'click',
-    KEYDOWN: 'keydown'
+    KEYDOWN: 'keydown',
+    MOUSEDOWN: 'mousedown',
+    MOUSEMOVE: 'mousemove',
+    MOUSEUP: 'mouseup'
   };
   var KEY_CODES = {
     ENTER: 13,
@@ -13,6 +16,42 @@
   var offerPanelClose = document.querySelector('.dialog__close');
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
+  var pinMain = pinMap.querySelector('.pin__main');
+  pinMain.addEventListener(EVENT_TYPES.MOUSEDOWN, function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener(EVENT_TYPES.MOUSEMOVE, onMouseMove);
+      document.removeEventListener(EVENT_TYPES.MOUSEUP, onMouseUp);
+    };
+
+    document.addEventListener(EVENT_TYPES.MOUSEMOVE, onMouseMove);
+    document.addEventListener(EVENT_TYPES.MOUSEUP, onMouseUp);
+  });
   // функция подсветки активного маркера при клике (enter)
   var pinActivate = function (evt) {
     if (evt.keyCode === KEY_CODES.ENTER || evt.type === EVENT_TYPES.CLICK) {
