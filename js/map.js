@@ -45,4 +45,3 @@
   offerPanelClose.addEventListener(EVENT_TYPES.CLICK, pinDeactivate);
   document.body.addEventListener(EVENT_TYPES.KEYDOWN, pinDeactivate);
 })();
-
