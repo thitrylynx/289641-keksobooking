@@ -1,6 +1,5 @@
 'use strict';
 
-
 var AVATAR_NUMBERS = [
   '01',
   '02',
@@ -93,7 +92,6 @@ var getRandomType = function (array) {
   return typeName;
 };
 
-
 // функция создания массива случайных объявлений
 var getRandomDialogsArr = function (length) {
   var array = [];
@@ -181,7 +179,6 @@ var offerPanelClose = document.querySelector('.dialog__close');
 var pinMap = document.querySelector('.tokyo__pin-map');
 var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
 
-
 // функция удаления класса
 var removeClass = function (elements, className) {
   elements.forEach(function (element) {
@@ -254,6 +251,12 @@ var GUESTS = {
   TWO: '2',
   THREE: '3'
 };
+var TYPE = {
+  FLAT: 'flat',
+  HOUSE: 'house',
+  BUNGALO: 'bungalo',
+  PALACE: 'palace'
+};
 var form = document.querySelector('.notice__form');
 var title = document.getElementById('title');
 var price = document.getElementById('price');
@@ -264,8 +267,6 @@ var type = document.getElementById('type');
 var description = document.getElementById('description');
 var capacity = document.getElementById('capacity');
 var roomNumber = document.getElementById('room_number');
-
-
 var setDefaultSettings = function () {
   form.reset();
   title.value = '';
@@ -283,16 +284,23 @@ var dynamicCorrectInputs = function (constant, variable) {
   });
 };
 
-var dynamicCorrectPrice = function (element1, element2) {
-  element1.addEventListener('change', function () {
-    if (element1.value === 'bungalo') {
-      element2.value = '0';
-    } else if (element1.value === 'flat') {
-      element2.value = '1000';
-    } else if (element1.value === 'house') {
-      element2.value = '5000';
-    } else if (element1.value === 'palace') {
-      element2.value = '10000';
+var dynamicCorrectPrice = function () {
+  type.addEventListener('change', function () {
+    switch (type.value) {
+      case TYPE.FLAT:
+        price.value = 1000;
+        return 'Квартира';
+      case TYPE.HOUSE:
+        price.value = 5000;
+        return 'Дом';
+      case TYPE.BUNGALO:
+        price.value = 0;
+        return 'Бунгало';
+      case TYPE.PALACE:
+        price.value = 10000;
+        return 'Дворец';
+      default:
+        return '';
     }
   });
 };
@@ -323,27 +331,21 @@ var dynamicCorrectCapacity = function (element1, element2) {
     }
   });
 };
-
 dynamicCorrectInputs(timeIn, timeOut);
 dynamicCorrectInputs(timeOut, timeIn);
 dynamicCorrectPrice(type, price);
 dynamicCorrectCapacity(roomNumber, capacity);
 dynamicCorrectRooms(capacity, roomNumber);
-
 title.addEventListener('input', function (evt) {
   var target = evt.target;
   if (target.value.length < SYMBOLS.MIN) {
     target.setCustomValidity('Имя должно состоять минимум из 30-ти символов');
-    title.style.borderColor = 'red';
   } else if (target.value.length > SYMBOLS.MAX) {
     target.setCustomValidity('Имя должно иметь не больше 100 символов');
-    title.style.borderColor = 'red';
   } else {
     target.setCustomValidity('');
-    title.style.borderColor = '';
   }
 });
-
 address.addEventListener('input', function (evt) {
   var target = evt.target;
   if (target.value.length < 1) {
@@ -354,7 +356,6 @@ address.addEventListener('input', function (evt) {
     address.style.borderColor = '';
   }
 });
-
 price.addEventListener('input', function (evt) {
   var target = evt.target;
   if (target.value.length < 1) {
@@ -369,4 +370,3 @@ price.addEventListener('input', function (evt) {
   }
 });
 setDefaultSettings();
-
