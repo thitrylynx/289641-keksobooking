@@ -1,7 +1,9 @@
+'use strict';
+
 (function () {
-  var SERVER_URL = 'https://1510.dump.academy/keksobooking/data';
+  var SERVER_URL = 'https://1510.dump.academy/keksobooking';
   var setup = function (onSuccess, onError) {
-    var xhr = XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
@@ -22,7 +24,7 @@
 
   window.backend = {
     load: function (onSuccess, onError) {
-      var xhr = setup(onSuccess,onError);
+      var xhr = setup(onSuccess, onError);
       xhr.open('GET', SERVER_URL + '/data');
       xhr.send();
     },

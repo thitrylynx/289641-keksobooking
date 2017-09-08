@@ -94,7 +94,6 @@
     var target = evt.currentTarget;
     target.classList.add('pin--active');
     var activePinNumber = pinsArray.indexOf(target);
-    offerPanel.classList.remove('hidden');
     window.showCard.show(activePinNumber);
   };
   // показать объяления

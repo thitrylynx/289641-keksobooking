@@ -25,4 +25,15 @@
       document.querySelector('.tokyo__pin-map').appendChild(fragmentPin);
     }
   };
+  how: function (active) {
+    window.backend.load(function (offer) {
+      var fragmentFeature = document.createDocumentFragment();
+      var panelElement = offerPanelTemplate.cloneNode(true);
+      offerPanel.appendChild(window.card.renderOfferPanel(offer[active]));
+      offerPanel.replaceChild(fragmentPanel, offerPanel.children[1]);
+      panelElement.querySelector('.lodge__features').appendChild(fragmentFeature);
+      offerPanel.classList.remove('hidden');
+    });
+  }
+  window.pin.render(window.data);
 })();
