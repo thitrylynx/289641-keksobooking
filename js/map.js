@@ -49,22 +49,22 @@
       window.utils.removeClass(pins, 'pin--active');
     }
   };
-  var createCb = function (offer) {
+  var callback = function (offer) {
     return function (evt) {
       pinActivate(evt, offer);
     };
   };
   var renderPinList = function (offers) {
-    var frag = document.createDocumentFragment();
+    var fragment = document.createDocumentFragment();
     for (var i = 0; i < offers.length; i++) {
       var id = i;
       var offer = offers[id];
       var pinEl = window.pin.renderPin(offer);
-      frag.appendChild(pinEl);
-      pinEl.addEventListener(EVENT_TYPES.CLICK, createCb(offer));
-      pinEl.addEventListener(EVENT_TYPES.KEYDOWN, createCb(offer));
+      fragment.appendChild(pinEl);
+      pinEl.addEventListener(EVENT_TYPES.CLICK, callback(offer));
+      pinEl.addEventListener(EVENT_TYPES.KEYDOWN, callback(offer));
     }
-    document.querySelector('.tokyo__pin-map').appendChild(frag);
+    document.querySelector('.tokyo__pin-map').appendChild(fragment);
   };
   var successHandler = function (offer) {
     offerList = offer;
