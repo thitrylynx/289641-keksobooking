@@ -11,7 +11,7 @@
 
       newElement.classList.add('pin');
       newElement.style.left = (offer.location.x - PIN_WIDTH / 2) + 'px';
-      newElement.style.top = (offer.location.y) + 'px';
+      newElement.style.top = (offer.location.y - 70) + 'px';
       imgElement.classList.add('rounded');
       imgElement.style.width = PIN_WIDTH + 'px';
       imgElement.style.height = PIN_HEIGHT + 'px';

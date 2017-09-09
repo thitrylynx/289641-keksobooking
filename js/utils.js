@@ -4,11 +4,11 @@
   // skrin + data вынеси 56
   window.utils = {
     removeClass: function (elements, className) {
-      elements.forEach(function (element) {
-        if (element.classList.contains(className)) {
-          element.classList.remove(className);
+      for (var i = 0; i < elements.length; i++) {
+        if (elements[i].classList.contains(className)) {
+          elements[i].classList.remove(className);
         }
-      });
+      }
     }
   };
 })();

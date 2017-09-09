@@ -16,7 +16,6 @@
   var offerPanel = document.getElementById('offer-dialog');
   var offerPanelClose = document.querySelector('.dialog__close');
   var pinMap = document.querySelector('.tokyo__pin-map');
-  var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
   var pinMain = pinMap.querySelector('.pin__main');
   var address = document.getElementById('address');
 
@@ -29,7 +28,6 @@
   };
   // функция добавления класса активного элемента при нажатии на маркер
   var showActivPin = function (evt) {
-    window.utils.removeClass(pins, 'pin--active');
     var target = evt.currentTarget;
     target.classList.add('pin--active');
     offerPanel.classList.remove('hidden');
@@ -37,6 +35,8 @@
   // функция подсветки активного маркера при клике (enter)
   var pinActivate = function (evt, offer) {
     if (evt.keyCode === KEY_CODES.ENTER || evt.type === EVENT_TYPES.CLICK) {
+      var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
+      window.utils.removeClass(pins, 'pin--active');
       showActivPin(evt);
       window.showCard.show(offer);
     }
@@ -45,6 +45,7 @@
   var pinDeactivate = function (evt) {
     if (evt.keyCode === KEY_CODES.ESC || evt.type === EVENT_TYPES.CLICK) {
       offerPanel.classList.add('hidden');
+      var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
       window.utils.removeClass(pins, 'pin--active');
     }
   };
@@ -65,10 +66,17 @@
     }
     document.querySelector('.tokyo__pin-map').appendChild(frag);
   };
-  window.backend.load(function (offer) {
+  var successHandler = function (offer) {
     offerList = offer;
     renderPinList(offerList);
-  });
+  };
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; position: fixed; margin: 0 auto; text-align: center; background-color: red; left: 0; right: 0; color: white; font-size: 20px;';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+  window.backend.load(successHandler, errorHandler);
   // скрыть объявления
   offerPanelClose.addEventListener(EVENT_TYPES.CLICK, pinDeactivate);
   document.body.addEventListener(EVENT_TYPES.KEYDOWN, pinDeactivate);

@@ -67,7 +67,6 @@
   };
   dynamicCorrectCapacity(roomNumber, capacity);
   dynamicCorrectRooms(capacity, roomNumber);
-
   title.addEventListener('input', function (evt) {
     var target = evt.target;
     if (target.value.length < SYMBOLS.MIN) {
@@ -103,5 +102,17 @@
       price.style.borderColor = '';
     }
   });
-  setDefaultSettings();
+  var onSuccess = function () {
+    setDefaultSettings();
+  };
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 110; position: fixed; margin: 0 auto; text-align: center; background-color: red; left: 0; right: 0; color: white; font-size: 20px;';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(form), onSuccess, errorHandler);
+  });
 })();
