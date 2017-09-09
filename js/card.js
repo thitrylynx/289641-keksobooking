@@ -4,8 +4,6 @@
 (function () {
   var offerPanelTemplate = document.getElementById('lodge-template').content;
   var fragmentFeature = document.createDocumentFragment();
-  var offerPanel = document.getElementById('offer-dialog');
-  var fragmentPanel = document.createDocumentFragment();
   window.card = {
     renderOfferPanel: function (offer) {
       var panelElement = offerPanelTemplate.cloneNode(true);
@@ -27,10 +25,6 @@
       panelElement.querySelector('.lodge__description').textContent = offer.offer.description;
       dialogImage.setAttribute('src', offer.author.avatar);
       return panelElement;
-    },
-    openDialog: function (activePinNumber) {
-      offerPanel.appendChild(window.card.renderOfferPanel(window.data[activePinNumber]));
-      offerPanel.replaceChild(fragmentPanel, offerPanel.children[1]);
     }
   };
   window.pin.render(window.data);

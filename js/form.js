@@ -21,18 +21,10 @@
     TWO: '2',
     THREE: '3'
   };
-  var TYPE = {
-    FLAT: 'flat',
-    HOUSE: 'house',
-    BUNGALO: 'bungalo',
-    PALACE: 'palace'
-  };
   var form = document.querySelector('.notice__form');
   var title = document.getElementById('title');
   var price = document.getElementById('price');
   var address = document.getElementById('address');
-  var timeIn = document.getElementById('timein');
-  var timeOut = document.getElementById('timeout');
   var type = document.getElementById('type');
   var description = document.getElementById('description');
   var capacity = document.getElementById('capacity');
@@ -46,31 +38,6 @@
     price.value = 1000;
     description.value = '';
     roomNumber.value = '1';
-  };
-  var dynamicCorrectInputs = function (constant, variable) {
-    constant.addEventListener('change', function () {
-      variable.value = constant.value;
-    });
-  };
-  var dynamicCorrectPrice = function () {
-    type.addEventListener('change', function () {
-      switch (type.value) {
-        case TYPE.FLAT:
-          price.value = 1000;
-          return 'Квартира';
-        case TYPE.HOUSE:
-          price.value = 5000;
-          return 'Дом';
-        case TYPE.BUNGALO:
-          price.value = 0;
-          return 'Бунгало';
-        case TYPE.PALACE:
-          price.value = 10000;
-          return 'Дворец';
-        default:
-          return '';
-      }
-    });
   };
   var dynamicCorrectRooms = function (element1, element2) {
     element1.addEventListener('change', function () {
@@ -98,10 +65,6 @@
       }
     });
   };
-
-  dynamicCorrectInputs(timeIn, timeOut);
-  dynamicCorrectInputs(timeOut, timeIn);
-  dynamicCorrectPrice(type, price);
   dynamicCorrectCapacity(roomNumber, capacity);
   dynamicCorrectRooms(capacity, roomNumber);
 
