@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var offerList = [];
   var EVENT_TYPES = {
     CLICK: 'click',
     KEYDOWN: 'keydown',
@@ -27,19 +28,17 @@
     address.value = 'x: ' + pinCoords.x + ', ' + 'y: ' + pinCoords.y;
   };
   // функция добавления класса активного элемента при нажатии на маркер
-  var renderOffer = function (evt) {
-    var pinsArray = Array.prototype.slice.call(pins);
+  var showActivPin = function (evt) {
     window.utils.removeClass(pins, 'pin--active');
     var target = evt.currentTarget;
     target.classList.add('pin--active');
-    var activePinNumber = pinsArray.indexOf(target);
     offerPanel.classList.remove('hidden');
-    window.showCard.show(activePinNumber);
   };
   // функция подсветки активного маркера при клике (enter)
-  var pinActivate = function (evt) {
+  var pinActivate = function (evt, offer) {
     if (evt.keyCode === KEY_CODES.ENTER || evt.type === EVENT_TYPES.CLICK) {
-      renderOffer(evt);
+      showActivPin(evt);
+      window.showCard.show(offer);
     }
   };
   // функция закрытия объявления и удаления подсветки маркера
@@ -49,17 +48,27 @@
       window.utils.removeClass(pins, 'pin--active');
     }
   };
-  window.backend.load(function (offer) {
-    for (var k = 0; k < offer.length; k++) {
-      document.querySelector('.tokyo__pin-map').appendChild(window.pin.renderPin(offer[k]));
-      window.data = offer;
+  var createCb = function (offer) {
+    return function (evt) {
+      pinActivate(evt, offer);
+    };
+  };
+  var renderPinList = function (offers) {
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < offers.length; i++) {
+      var id = i;
+      var offer = offers[id];
+      var pinEl = window.pin.renderPin(offer);
+      frag.appendChild(pinEl);
+      pinEl.addEventListener(EVENT_TYPES.CLICK, createCb(offer));
+      pinEl.addEventListener(EVENT_TYPES.KEYDOWN, createCb(offer));
     }
+    document.querySelector('.tokyo__pin-map').appendChild(frag);
+  };
+  window.backend.load(function (offer) {
+    offerList = offer;
+    renderPinList(offerList);
   });
-  // показать объяления
-  for (var i = 0; i < pins.length; i++) {
-    pins[i].addEventListener(EVENT_TYPES.CLICK, pinActivate);
-    pins[i].addEventListener(EVENT_TYPES.KEYDOWN, pinActivate);
-  }
   // скрыть объявления
   offerPanelClose.addEventListener(EVENT_TYPES.CLICK, pinDeactivate);
   document.body.addEventListener(EVENT_TYPES.KEYDOWN, pinDeactivate);

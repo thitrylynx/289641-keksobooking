@@ -6,7 +6,6 @@
 
   window.pin = {
     renderPin: function (offer) {
-      var fragmentPin = document.createDocumentFragment();
       var newElement = document.createElement('div');
       var imgElement = document.createElement('img');
 
@@ -18,10 +17,9 @@
       imgElement.style.height = PIN_HEIGHT + 'px';
       imgElement.setAttribute('src', offer.author.avatar);
       imgElement.setAttribute('tabindex', '0');
-      fragmentPin.appendChild(newElement);
       newElement.appendChild(imgElement);
 
-      return fragmentPin;
+      return newElement;
     }
   };
 })();
