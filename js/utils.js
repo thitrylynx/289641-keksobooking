@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  // skrin + data вынеси 56
   window.utils = {
     removeClass: function (elements, className) {
       elements.forEach(function (element) {
