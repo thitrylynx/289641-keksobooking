@@ -18,6 +18,7 @@
   var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
   var pinMain = pinMap.querySelector('.pin__main');
   var address = document.getElementById('address');
+
   var addressInput = function () {
     var pinCoords = {
       x: (pinMain.offsetLeft + Math.floor(pinMain.offsetWidth / 2)),
@@ -25,6 +26,7 @@
     };
     address.value = 'x: ' + pinCoords.x + ', ' + 'y: ' + pinCoords.y;
   };
+
   pinMain.addEventListener(EVENT_TYPES.MOUSEDOWN, function (evt) {
     evt.preventDefault();
 
@@ -89,13 +91,20 @@
   };
   // функция добавления класса активного элемента при нажатии на маркер
   var renderOffer = function (evt) {
+    
     var pinsArray = Array.prototype.slice.call(pins);
     window.utils.removeClass(pins, 'pin--active');
     var target = evt.currentTarget;
     target.classList.add('pin--active');
     var activePinNumber = pinsArray.indexOf(target);
+    offerPanel.classList.remove('hidden');
     window.showCard.show(activePinNumber);
   };
+  window.backend.load(function (offer) {
+    for (var k = 0; k < offer.length; k++) {
+      document.querySelector('.tokyo__pin-map').appendChild(window.pin.renderPin(offer[k]));
+    }
+  });
   // показать объяления
   for (var i = 0; i < pins.length; i++) {
     pins[i].addEventListener(EVENT_TYPES.CLICK, pinActivate);

@@ -29,7 +29,7 @@
       xhr.send();
     },
     save: function (data, onSuccess, onError) {
-      var xhr = setup(onSuccess,onError);
+      var xhr = setup(onSuccess, onError);
       xhr.open('GET', SERVER_URL);
       xhr.send(data);
     }
