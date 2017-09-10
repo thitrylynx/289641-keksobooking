@@ -1,74 +1,26 @@
 'use strict';
 
 (function () {
-  var offerList = [];
-  var EVENT_TYPES = {
-    CLICK: 'click',
-    KEYDOWN: 'keydown',
-    MOUSEDOWN: 'mousedown',
-    MOUSEMOVE: 'mousemove',
-    MOUSEUP: 'mouseup'
-  };
-  var KEY_CODES = {
-    ENTER: 13,
-    ESC: 27
-  };
-  var offerPanel = document.getElementById('offer-dialog');
-  var offerPanelClose = document.querySelector('.dialog__close');
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = pinMap.querySelector('.pin__main');
-  var address = document.getElementById('address');
 
   var addressInput = function () {
     var pinCoords = {
       x: (pinMain.offsetLeft + Math.floor(pinMain.offsetWidth / 2)),
       y: (pinMain.offsetTop + pinMain.offsetTop)
     };
-    address.value = 'x: ' + pinCoords.x + ', ' + 'y: ' + pinCoords.y;
+    window.Form.setAddress('x: ' + pinCoords.x + ', ' + 'y: ' + pinCoords.y);
   };
-  // функция добавления класса активного элемента при нажатии на маркер
-  var showActivPin = function (evt) {
-    var target = evt.currentTarget;
-    target.classList.add('pin--active');
-    offerPanel.classList.remove('hidden');
+
+  var onPinActive = function (offer) {
+    window.Card.show(offer);
   };
-  // функция подсветки активного маркера при клике (enter)
-  var pinActivate = function (evt, offer) {
-    if (evt.keyCode === KEY_CODES.ENTER || evt.type === EVENT_TYPES.CLICK) {
-      var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
-      window.utils.removeClass(pins, 'pin--active');
-      showActivPin(evt);
-      window.showCard.show(offer);
-    }
+  var onPinUnactive = function () {
+    window.Card.hide();
   };
-  // функция закрытия объявления и удаления подсветки маркера
-  var pinDeactivate = function (evt) {
-    if (evt.keyCode === KEY_CODES.ESC || evt.type === EVENT_TYPES.CLICK) {
-      offerPanel.classList.add('hidden');
-      var pins = pinMap.querySelectorAll('.pin:not(:first-child)');
-      window.utils.removeClass(pins, 'pin--active');
-    }
-  };
-  var callback = function (offer) {
-    return function (evt) {
-      pinActivate(evt, offer);
-    };
-  };
-  var renderPinList = function (offers) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < offers.length; i++) {
-      var id = i;
-      var offer = offers[id];
-      var pinEl = window.pin.renderPin(offer);
-      fragment.appendChild(pinEl);
-      pinEl.addEventListener(EVENT_TYPES.CLICK, callback(offer));
-      pinEl.addEventListener(EVENT_TYPES.KEYDOWN, callback(offer));
-    }
-    document.querySelector('.tokyo__pin-map').appendChild(fragment);
-  };
+
   var successHandler = function (offer) {
-    offerList = offer;
-    renderPinList(offerList);
+    window.Pin.renderPinList(offer, onPinActive, onPinUnactive);
   };
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
@@ -77,11 +29,9 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
   window.backend.load(successHandler, errorHandler);
-  // скрыть объявления
-  offerPanelClose.addEventListener(EVENT_TYPES.CLICK, pinDeactivate);
-  document.body.addEventListener(EVENT_TYPES.KEYDOWN, pinDeactivate);
 
-  pinMain.addEventListener(EVENT_TYPES.MOUSEDOWN, function (evt) {
+
+  pinMain.addEventListener(window.utils.EVENT_TYPES.MOUSEDOWN, function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -121,14 +71,15 @@
       pinMain.style.top = checkCoordsY() + 'px';
       pinMain.style.left = checkCoordsX() + 'px';
     };
+    // TODO
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      document.removeEventListener(EVENT_TYPES.MOUSEMOVE, onMouseMove);
-      document.removeEventListener(EVENT_TYPES.MOUSEUP, onMouseUp);
+      document.removeEventListener(window.utils.EVENT_TYPES.MOUSEMOVE, onMouseMove);
+      document.removeEventListener(window.utils.EVENT_TYPES.MOUSEUP, onMouseUp);
     };
 
-    document.addEventListener(EVENT_TYPES.MOUSEMOVE, onMouseMove);
-    document.addEventListener(EVENT_TYPES.MOUSEUP, onMouseUp);
+    document.addEventListener(window.utils.EVENT_TYPES.MOUSEMOVE, onMouseMove);
+    document.addEventListener(window.utils.EVENT_TYPES.MOUSEUP, onMouseUp);
   });
 })();
 

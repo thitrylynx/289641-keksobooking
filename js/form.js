@@ -1,9 +1,9 @@
 'use strict';
 
-(function () {
+window.Form = (function () {
   var PRICES = {
     MIN: 0,
-    MAX: 1000000
+    MAX: 1000000,
   };
   var SYMBOLS = {
     MIN: 30,
@@ -39,17 +39,38 @@
     description.value = '';
     roomNumber.value = '1';
   };
-  var dynamicCorrectRooms = function (element1, element2) {
-    element1.addEventListener('change', function () {
-      if (element1.value === GUESTS.ONE) {
-        element2.value = ROOMS.ONE;
-      } else if (element1.value === GUESTS.ONE || element1.value === GUESTS.TWO) {
-        element2.value = ROOMS.TWO;
-      } else if (element1.value === GUESTS.ONE || element1.value === GUESTS.TWO || element1.value === GUESTS.THREE) {
-        element2.value = ROOMS.THREE;
-      } else if (element1.value === GUESTS.ZERO) {
-        element2.value = ROOMS.HUNGRED;
-      }
+  // var GUEST_ROOMS = {};
+  // GUEST_ROOMS[GUESTS.ONE] = [ROOMS.ONE, ROOMS.TWO, ROOMS.THREE];
+  // GUEST_ROOMS[GUESTS.TWO] = [ROOMS.TWO, ROOMS.THREE];
+  // GUEST_ROOMS[GUESTS.TWO] = [ROOMS.THREE];
+  // GUEST_ROOMS[GUESTS.ZERO] = [ROOMS.HUNGRED];
+
+  // 1 комната — «для одного гостя»
+  // 2 комнаты — «для 2-х или 1-го гостя»
+  // 3 комнаты — «для 2-х, 1-го или 3-х гостей»
+  // 100 комнат — «не для гостей»
+  var getRoomsByGuest = function (guest, room) {
+    // var list = GUEST_ROOMS[guest];
+    // if (list.indexOf(room) === -1) {
+    //   return list[0];
+    // }
+    if (guest === GUESTS.ONE && room === ROOMS.HUNGRED) {
+      return ROOMS.ONE;
+    }
+    if (guest === GUESTS.TWO && room !== ROOMS.TWO && room !== ROOMS.THREE) {
+      return ROOMS.TWO;
+    }
+    if (guest === GUESTS.THREE) {
+      return ROOMS.THREE;
+    }
+    if (guest === GUESTS.ZERO) {
+      return ROOMS.HUNGRED;
+    }
+    return room;
+  };
+  var dynamicCorrectRooms = function (guestEl, roomEl) {
+    guestEl.addEventListener('change', function () {
+      roomEl.value = getRoomsByGuest(guestEl.value, roomEl.value);
     });
   };
   var dynamicCorrectCapacity = function (element1, element2) {
@@ -82,10 +103,8 @@
     var target = evt.target;
     if (target.value.length < 1) {
       target.setCustomValidity('Обязательное поле');
-      address.style.borderColor = 'red';
     } else {
       target.setCustomValidity('');
-      address.style.borderColor = '';
     }
   });
 
@@ -93,13 +112,10 @@
     var target = evt.target;
     if (target.value.length < 1) {
       target.setCustomValidity('Минимальное значение - 0');
-      price.style.borderColor = 'red';
     } else if (target.value > PRICES.MAX) {
       target.setCustomValidity('Максимальное значение — 1 000 000');
-      price.style.borderColor = 'red';
     } else {
       target.setCustomValidity('');
-      price.style.borderColor = '';
     }
   });
   var errorHandler = function (errorMessage) {
@@ -119,4 +135,10 @@
     evt.preventDefault();
     window.backend.save(new FormData(form), onSuccess, errorHandler);
   });
+
+  return {
+    setAddress: function (val) {
+      address.value = val;
+    }
+  };
 })();
