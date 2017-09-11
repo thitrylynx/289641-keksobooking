@@ -3,7 +3,6 @@
 (function () {
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = pinMap.querySelector('.pin__main');
-
   var addressInput = function () {
     var pinCoords = {
       x: (pinMain.offsetLeft + Math.floor(pinMain.offsetWidth / 2)),
@@ -11,14 +10,12 @@
     };
     window.Form.setAddress('x: ' + pinCoords.x + ', ' + 'y: ' + pinCoords.y);
   };
-
   var onPinActive = function (offer) {
     window.Card.show(offer);
   };
   var onPinUnactive = function () {
     window.Card.hide();
   };
-
   var successHandler = function (offer) {
     window.Pin.renderPinList(offer, onPinActive, onPinUnactive);
   };
@@ -28,17 +25,14 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
-  window.backend.load(successHandler, errorHandler);
 
-
+  window.Backend.load(successHandler, errorHandler);
   pinMain.addEventListener(window.utils.EVENT_TYPES.MOUSEDOWN, function (evt) {
     evt.preventDefault();
-
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
-
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       addressInput();
@@ -46,7 +40,6 @@
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
       };
-
       startCoords = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
@@ -68,10 +61,10 @@
           totalCoordsX = 1130;
         } return totalCoordsX;
       };
+
       pinMain.style.top = checkCoordsY() + 'px';
       pinMain.style.left = checkCoordsX() + 'px';
     };
-    // TODO
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
       document.removeEventListener(window.utils.EVENT_TYPES.MOUSEMOVE, onMouseMove);

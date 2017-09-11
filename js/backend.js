@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.Backend = (function () {
   var SERVER_URL = 'https://1510.dump.academy/keksobooking';
   var setup = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -31,7 +31,7 @@
     return xhr;
   };
 
-  window.backend = {
+  return {
     load: function (onSuccess, onError) {
       var xhr = setup(onSuccess, onError);
       xhr.open('GET', SERVER_URL + '/data');
@@ -44,3 +44,4 @@
     }
   };
 })();
+

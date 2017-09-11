@@ -1,6 +1,7 @@
 'use strict';
 
 window.utils = (function () {
+
   return {
     EVENT_TYPES: {
       CLICK: 'click',

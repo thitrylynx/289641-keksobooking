@@ -33,40 +33,44 @@ window.Pin = (function () {
   };
 
   return {
-    /**
+    /*
      * Отрисовка пинов на основании списка объявлений.
      *
      * @param {Object[]} offers список объявлений
      * @param {function} [onActive] дейсвие при активации пина
      * @param {function} [onUnactive] дейсвие при деактивации пина
      */
-    renderPinList: function (offers, onActive, onUnactive) {
+
+    renderPinList: function (offers, onActive) {
       var fragment = document.createDocumentFragment();
       offers.forEach(function (offer) {
         var pinEl = createPinEl(offer);
-        fragment.appendChild(pinEl);
-        pinElList.push(pinEl);
-
-        pinEl.addEventListener(window.utils.EVENT_TYPES.CLICK, function (e) {
-          if (e.keyCode === window.utils.KEY_CODES.ENTER
-            || e.type === window.utils.EVENT_TYPES.CLICK) {
+        var onPinKeyENTER = function (evt) {
+          if (evt.keyCode === window.utils.KEY_CODES.ENTER) {
             pinActivate(pinEl, offer);
             if (onActive) {
               onActive(offer);
+              pinEl.removeEventListener(window.utils.EVENT_TYPES.KEYDOWN, onPinKeyENTER);
             }
           }
-        });
-        pinEl.addEventListener(window.utils.EVENT_TYPES.KEYDOWN, function (e) {
-          if (e.keyCode === window.utils.KEY_CODES.ESC || e.type === window.utils.EVENT_TYPES.CLICK) {
-            pinDeactivate(offer);
-            if (onUnactive) {
-              onUnactive(offer);
+        };
+        var onPinClick = function (evt) {
+          if (evt.type === window.utils.EVENT_TYPES.CLICK) {
+            pinActivate(pinEl, offer);
+            if (onActive) {
+              onActive(offer);
+              pinEl.removeEventListener(window.utils.EVENT_TYPES.KEYDOWN, onPinClick);
             }
           }
-        });
+        };
+        fragment.appendChild(pinEl);
+        pinElList.push(pinEl);
+
+        pinEl.addEventListener(window.utils.EVENT_TYPES.KEYDOWN, onPinKeyENTER);
+        pinEl.addEventListener(window.utils.EVENT_TYPES.CLICK, onPinClick);
       });
       mapEl.appendChild(fragment);
     },
-    pinDeactivate: pinDeactivate,
+    pinDeactivate: pinDeactivate
   };
 })();

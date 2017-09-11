@@ -3,7 +3,7 @@
 window.Form = (function () {
   var PRICES = {
     MIN: 0,
-    MAX: 1000000,
+    MAX: 1000000
   };
   var SYMBOLS = {
     MIN: 30,
@@ -29,6 +29,9 @@ window.Form = (function () {
   var description = document.getElementById('description');
   var capacity = document.getElementById('capacity');
   var roomNumber = document.getElementById('room_number');
+  var checkinTime = document.getElementById('timein');
+  var checkoutTime = document.getElementById('timeout');
+
   var setDefaultSettings = function () {
     form.reset();
     title.value = '';
@@ -39,21 +42,13 @@ window.Form = (function () {
     description.value = '';
     roomNumber.value = '1';
   };
-  // var GUEST_ROOMS = {};
-  // GUEST_ROOMS[GUESTS.ONE] = [ROOMS.ONE, ROOMS.TWO, ROOMS.THREE];
-  // GUEST_ROOMS[GUESTS.TWO] = [ROOMS.TWO, ROOMS.THREE];
-  // GUEST_ROOMS[GUESTS.TWO] = [ROOMS.THREE];
-  // GUEST_ROOMS[GUESTS.ZERO] = [ROOMS.HUNGRED];
-
+  //
   // 1 комната — «для одного гостя»
   // 2 комнаты — «для 2-х или 1-го гостя»
   // 3 комнаты — «для 2-х, 1-го или 3-х гостей»
   // 100 комнат — «не для гостей»
+  //
   var getRoomsByGuest = function (guest, room) {
-    // var list = GUEST_ROOMS[guest];
-    // if (list.indexOf(room) === -1) {
-    //   return list[0];
-    // }
     if (guest === GUESTS.ONE && room === ROOMS.HUNGRED) {
       return ROOMS.ONE;
     }
@@ -73,21 +68,40 @@ window.Form = (function () {
       roomEl.value = getRoomsByGuest(guestEl.value, roomEl.value);
     });
   };
-  var dynamicCorrectCapacity = function (element1, element2) {
-    element1.addEventListener('change', function () {
-      if (element1.value === ROOMS.ONE || element1.value === ROOMS.TWO || element1.value === ROOMS.THREE) {
-        element2.value = GUESTS.ONE;
-      } else if (element1.value === ROOMS.TWO || element1.value === ROOMS.THREE) {
-        element2.value = GUESTS.TWO;
-      } else if (element1.value === ROOMS.THREE) {
-        element2.value = GUESTS.THREE;
-      } else if (element1.value === ROOMS.HUNGRED) {
-        element2.value = GUESTS.ZERO;
-      }
+  var getGuestByRooms = function (room, guest) {
+    if (room === ROOMS.ONE && guest !== GUESTS.ONE) {
+      return GUESTS.ONE;
+    }
+    if (room === ROOMS.TWO && guest !== GUESTS.ONE && guest !== GUESTS.TWO) {
+      return GUESTS.TWO;
+    }
+    if (room === ROOMS.THREE && guest === GUESTS.ZERO) {
+      return GUESTS.THREE;
+    }
+    if (room === ROOMS.HUNGRED) {
+      return GUESTS.ZERO;
+    }
+    return guest;
+  };
+  var dynamicCorrectGuests = function (roomEl, guestEl) {
+    roomEl.addEventListener('change', function () {
+      guestEl.value = getGuestByRooms(roomEl.value, guestEl.value);
     });
   };
-  dynamicCorrectCapacity(roomNumber, capacity);
+  var syncValues = function (element, value) {
+    element.value = value;
+  };
+  var syncValueWithMin = function (element, value) {
+    element.min = value;
+    element.value = value;
+  };
+
   dynamicCorrectRooms(capacity, roomNumber);
+  dynamicCorrectGuests(roomNumber, capacity);
+  window.synchronizeFields(checkinTime, checkoutTime, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValues);
+  window.synchronizeFields(checkoutTime, checkinTime, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValues);
+  window.synchronizeFields(type, price, ['flat', 'bungalo', 'house', 'palace'], [1000, 0, 5000, 10000], syncValueWithMin);
+
   title.addEventListener('input', function (evt) {
     var target = evt.target;
     if (target.value.length < SYMBOLS.MIN) {
@@ -98,7 +112,6 @@ window.Form = (function () {
       target.setCustomValidity('');
     }
   });
-
   address.addEventListener('input', function (evt) {
     var target = evt.target;
     if (target.value.length < 1) {
@@ -107,7 +120,6 @@ window.Form = (function () {
       target.setCustomValidity('');
     }
   });
-
   price.addEventListener('input', function (evt) {
     var target = evt.target;
     if (target.value.length < 1) {
@@ -118,6 +130,7 @@ window.Form = (function () {
       target.setCustomValidity('');
     }
   });
+
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
     node.className = 'error-message';
@@ -131,9 +144,10 @@ window.Form = (function () {
       document.body.firstChild.remove();
     }
   };
+
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.save(new FormData(form), onSuccess, errorHandler);
+    window.Backend.save(new FormData(form), onSuccess, errorHandler);
   });
 
   return {
