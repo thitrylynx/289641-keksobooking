@@ -3,6 +3,10 @@
 (function () {
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = pinMap.querySelector('.pin__main');
+  var pinsList = [];
+  var updatePinsList = function () {
+    window.Pin.renderPinList(pinsList, onPinActive, onPinUnactive);
+  };
   var addressInput = function () {
     var pinCoords = {
       x: (pinMain.offsetLeft + Math.floor(pinMain.offsetWidth / 2)),
@@ -16,8 +20,9 @@
   var onPinUnactive = function () {
     window.Card.hide();
   };
-  var successHandler = function (offer) {
-    window.Pin.renderPinList(offer, onPinActive, onPinUnactive);
+  var successHandler = function (data) {
+    pinsList = data;
+    updatePinsList();
   };
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
