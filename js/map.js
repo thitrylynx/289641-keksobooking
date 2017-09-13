@@ -5,7 +5,10 @@
   var pinMain = pinMap.querySelector('.pin__main');
   var pinsList = [];
   var updatePinsList = function () {
-    window.Pin.renderPinList(pinsList, onPinActive, onPinUnactive);
+    window.Pin.renderPinList(window.Filters(pinsList), onPinActive, onPinUnactive);
+  };
+  window.map = {
+    update: updatePinsList()
   };
   var addressInput = function () {
     var pinCoords = {

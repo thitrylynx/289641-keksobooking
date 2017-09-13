@@ -1,6 +1,6 @@
 'use strict';
 
-window.filters = (function () {
+window.Filters = (function () {
   var filtersContainer = document.querySelector('.tokyo__filters');
   var housingType = document.getElementById('housing_type');
   var housingPrice = document.getElementById('housing_price');
@@ -26,7 +26,7 @@ window.filters = (function () {
         return arr.offer.price < 10000;
       case 'high':
         return arr.offer.price > 50000;
-    }
+    } return false;
   };
   var filterByRoomNumber = function (it, arr) {
     switch (housingRoomNumber.value) {
@@ -44,11 +44,14 @@ window.filters = (function () {
         return arr.offer.guests === Number(housingType.value);
     }
   };
+ /* filtersContainer.forEach(function (arr) {
+    arr.addEventListener('change', window.map.update);
+  });*/
   var filterF = [filterByType, filterByPrice, filterByRoomNumber, filterByGuestsNumber];
 
-  return function (arr) {
+  return function (array) {
     return filterF.reduce(function (initial, el) {
       return initial.filter(el);
-    }, arr);
+    }, array);
   };
 })();
