@@ -1,12 +1,13 @@
 'use strict';
 
-window.debounce = (function () {
-  var DEBOUNCE_INT = 300;
-  var lastTimeout;
-  return function (value) {
+window.debounce = function (value) {
+  var DEBOUNCE_INT = 500; // 30 сек
+  var lastTimeout = 0;
+
+  return function () {
     if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
+      clearTimeout(lastTimeout);
     }
-    lastTimeout = window.setTimeout(value, DEBOUNCE_INT);
+    lastTimeout = setTimeout(value, DEBOUNCE_INT);
   };
-})();
+};

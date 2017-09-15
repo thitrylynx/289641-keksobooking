@@ -3,13 +3,6 @@
 (function () {
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = pinMap.querySelector('.pin__main');
-  var pinsList = [];
-  var updatePinsList = function () {
-    window.Pin.renderPinList(window.Filters(pinsList), onPinActive, onPinUnactive);
-  };
-  window.map = {
-    update: updatePinsList()
-  };
   var addressInput = function () {
     var pinCoords = {
       x: (pinMain.offsetLeft + Math.floor(pinMain.offsetWidth / 2)),
@@ -24,8 +17,8 @@
     window.Card.hide();
   };
   var successHandler = function (data) {
-    pinsList = data;
-    updatePinsList();
+    window.Pin.renderPinList(data, onPinActive, onPinUnactive);
+    window.pinsList = data;
   };
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
@@ -82,5 +75,12 @@
     document.addEventListener(window.utils.EVENT_TYPES.MOUSEMOVE, onMouseMove);
     document.addEventListener(window.utils.EVENT_TYPES.MOUSEUP, onMouseUp);
   });
+  var updatePinsList = function () {
+    window.utils.removeChild(pinMap);
+    window.Pin.renderPinList(window.filters(), onPinActive, onPinUnactive);
+  };
+  var debounceUpdate = window.debounce(updatePinsList);
+  var filtersContainer = document.querySelector('.tokyo__filters');
+  filtersContainer.addEventListener('change', debounceUpdate);
 })();
 

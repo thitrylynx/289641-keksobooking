@@ -22,15 +22,15 @@ window.Form = (function () {
     THREE: '3'
   };
   var form = document.querySelector('.notice__form');
-  var title = document.getElementById('title');
-  var price = document.getElementById('price');
-  var address = document.getElementById('address');
-  var type = document.getElementById('type');
-  var description = document.getElementById('description');
-  var capacity = document.getElementById('capacity');
-  var roomNumber = document.getElementById('room_number');
-  var checkinTime = document.getElementById('timein');
-  var checkoutTime = document.getElementById('timeout');
+  var title = document.querySelector('#title');
+  var price = document.querySelector('#price');
+  var address = document.querySelector('#address');
+  var type = document.querySelector('#type');
+  var description = document.querySelector('#description');
+  var capacity = document.querySelector('#capacity');
+  var roomNumber = document.querySelector('#room_number');
+  var checkinTime = document.querySelector('#timein');
+  var checkoutTime = document.querySelector('#timeout');
 
   var setDefaultSettings = function () {
     form.reset();

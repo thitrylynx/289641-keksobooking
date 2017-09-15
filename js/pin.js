@@ -38,7 +38,6 @@ window.Pin = (function () {
      *
      * @param {Object[]} offers список объявлений
      * @param {function} [onActive] дейсвие при активации пина
-     * @param {function} [onUnactive] дейсвие при деактивации пина
      */
 
     renderPinList: function (offers, onActive) {

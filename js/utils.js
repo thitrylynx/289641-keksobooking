@@ -20,6 +20,21 @@ window.utils = (function () {
           elements[i].classList.remove(className);
         }
       }
+    },
+    removeChild: function (parent) {
+      while (parent.children.length !== 1) {
+        parent.removeChild(parent.children[1]);
+      }
+    },
+    translate: function (value) {
+      switch (value) {
+        case 'flat':
+          return 'Квартира';
+        case 'house':
+          return 'Дом';
+        case 'bungalo':
+          return 'Бунгало';
+      } return value;
     }
   };
 })();
