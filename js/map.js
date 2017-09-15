@@ -16,8 +16,9 @@
   var onPinUnactive = function () {
     window.Card.hide();
   };
-  var successHandler = function (offer) {
-    window.Pin.renderPinList(offer, onPinActive, onPinUnactive);
+  var successHandler = function (data) {
+    window.Pin.renderPinList(data, onPinActive, onPinUnactive);
+    window.pinsList = data;
   };
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
@@ -74,5 +75,12 @@
     document.addEventListener(window.utils.EVENT_TYPES.MOUSEMOVE, onMouseMove);
     document.addEventListener(window.utils.EVENT_TYPES.MOUSEUP, onMouseUp);
   });
+  var updatePinsList = function () {
+    window.utils.removeChild(pinMap);
+    window.Pin.renderPinList(window.filters(), onPinActive, onPinUnactive);
+  };
+  var debounceUpdate = window.debounce(updatePinsList);
+  var filtersContainer = document.querySelector('.tokyo__filters');
+  filtersContainer.addEventListener('change', debounceUpdate);
 })();
 
