@@ -21,6 +21,11 @@ window.Form = (function () {
     TWO: '2',
     THREE: '3'
   };
+  var CHECKIN_OR_CHECKOUT_TIME = [
+    '12:00',
+    '13:00',
+    '14:00'
+  ];
   var form = document.querySelector('.notice__form');
   var title = document.querySelector('#title');
   var price = document.querySelector('#price');
@@ -96,8 +101,8 @@ window.Form = (function () {
   };
   dynamicCorrectRooms(capacity, roomNumber);
   dynamicCorrectGuests(roomNumber, capacity);
-  window.synchronizeFields(checkinTime, checkoutTime, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValues);
-  window.synchronizeFields(checkoutTime, checkinTime, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValues);
+  window.synchronizeFields(checkinTime, checkoutTime, CHECKIN_OR_CHECKOUT_TIME, CHECKIN_OR_CHECKOUT_TIME, syncValues);
+  window.synchronizeFields(checkoutTime, checkinTime, CHECKIN_OR_CHECKOUT_TIME, CHECKIN_OR_CHECKOUT_TIME, syncValues);
   window.synchronizeFields(type, price, ['flat', 'bungalo', 'house'], [1000, 0, 10000], syncValueWithMin);
 
   title.addEventListener('input', function (evt) {
