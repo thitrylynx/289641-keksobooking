@@ -13,9 +13,9 @@ window.Form = (function () {
     ONE: '1',
     TWO: '2',
     THREE: '3',
-    HUNGRED: '100'
+    HUNDRED: '100'
   };
-  var GUESTS = {
+  var GUEST_COUNTS = {
     ZERO: '0',
     ONE: '1',
     TWO: '2',
@@ -35,7 +35,6 @@ window.Form = (function () {
   var setDefaultSettings = function () {
     form.reset();
     title.value = '';
-    address.value = '';
     type.value = 'flat';
     price.type = 'number';
     price.value = 1000;
@@ -49,17 +48,17 @@ window.Form = (function () {
   // 100 комнат — «не для гостей»
   //
   var getRoomsByGuest = function (guest, room) {
-    if (guest === GUESTS.ONE && room === ROOMS.HUNGRED) {
+    if (guest === GUEST_COUNTS.ONE && room === ROOMS.HUNDRED) {
       return ROOMS.ONE;
     }
-    if (guest === GUESTS.TWO && room !== ROOMS.TWO && room !== ROOMS.THREE) {
+    if (guest === GUEST_COUNTS.TWO && room !== ROOMS.TWO && room !== ROOMS.THREE) {
       return ROOMS.TWO;
     }
-    if (guest === GUESTS.THREE) {
+    if (guest === GUEST_COUNTS.THREE) {
       return ROOMS.THREE;
     }
-    if (guest === GUESTS.ZERO) {
-      return ROOMS.HUNGRED;
+    if (guest === GUEST_COUNTS.ZERO) {
+      return ROOMS.HUNDRED;
     }
     return room;
   };
@@ -69,17 +68,17 @@ window.Form = (function () {
     });
   };
   var getGuestByRooms = function (room, guest) {
-    if (room === ROOMS.ONE && guest !== GUESTS.ONE) {
-      return GUESTS.ONE;
+    if (room === ROOMS.ONE && guest !== GUEST_COUNTS.ONE) {
+      return GUEST_COUNTS.ONE;
     }
-    if (room === ROOMS.TWO && guest !== GUESTS.ONE && guest !== GUESTS.TWO) {
-      return GUESTS.TWO;
+    if (room === ROOMS.TWO && guest !== GUEST_COUNTS.ONE && guest !== GUEST_COUNTS.TWO) {
+      return GUEST_COUNTS.TWO;
     }
-    if (room === ROOMS.THREE && guest === GUESTS.ZERO) {
-      return GUESTS.THREE;
+    if (room === ROOMS.THREE && guest === GUEST_COUNTS.ZERO) {
+      return GUEST_COUNTS.THREE;
     }
-    if (room === ROOMS.HUNGRED) {
-      return GUESTS.ZERO;
+    if (room === ROOMS.HUNDRED) {
+      return GUEST_COUNTS.ZERO;
     }
     return guest;
   };
@@ -113,7 +112,7 @@ window.Form = (function () {
   });
   address.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value.length < 1) {
+    if (target.value.length === '') {
       target.setCustomValidity('Обязательное поле');
     } else {
       target.setCustomValidity('');
