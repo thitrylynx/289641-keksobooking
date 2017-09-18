@@ -44,8 +44,8 @@ window.filters = (function () {
   };
   var filterByFeatures = function (itemValues) {
     var housingFeatures = document.querySelectorAll('.feature input[type="checkbox"]:checked');
-    var featuresActive = Array.prototype.map.call(housingFeatures, function (it) {
-      return it.value;
+    var featuresActive = Array.prototype.map.call(housingFeatures, function (item) {
+      return item.value;
     });
     return featuresActive.every(function (item) {
       return itemValues.indexOf(item) !== -1;

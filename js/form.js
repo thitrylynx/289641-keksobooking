@@ -62,9 +62,9 @@ window.Form = (function () {
     }
     return room;
   };
-  var dynamicCorrectRooms = function (guestEl, roomEl) {
-    guestEl.addEventListener('change', function () {
-      roomEl.value = getRoomsByGuest(guestEl.value, roomEl.value);
+  var dynamicCorrectRooms = function (guest, room) {
+    guest.addEventListener('change', function () {
+      room.value = getRoomsByGuest(guest.value, room.value);
     });
   };
   var getGuestByRooms = function (room, guest) {
@@ -82,9 +82,9 @@ window.Form = (function () {
     }
     return guest;
   };
-  var dynamicCorrectGuests = function (roomEl, guestEl) {
-    roomEl.addEventListener('change', function () {
-      guestEl.value = getGuestByRooms(roomEl.value, guestEl.value);
+  var dynamicCorrectGuests = function (room, guest) {
+    room.addEventListener('change', function () {
+      guest.value = getGuestByRooms(room.value, guest.value);
     });
   };
   var syncValues = function (element, value) {
@@ -149,8 +149,8 @@ window.Form = (function () {
   });
 
   return {
-    setAddress: function (val) {
-      address.value = val;
+    setAddress: function (value) {
+      address.value = value;
     }
   };
 })();
