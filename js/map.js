@@ -85,7 +85,7 @@
     window.Pin.renderPinList(window.filters(), onPinActive, onPinUnactive);
     window.Card.hide();
   };
-  var debounceUpdate = window.debounce(updatePinsList);
+  var debounceUpdate = window.utils.debounce(updatePinsList);
   var filtersContainer = document.querySelector('.tokyo__filters');
   filtersContainer.addEventListener('change', debounceUpdate);
 })();

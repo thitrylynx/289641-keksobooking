@@ -5,9 +5,9 @@ window.Card = (function () {
   var offerPanel = document.getElementById('offer-dialog');
   var offerPanelClose = document.querySelector('.dialog__close');
   var renderOfferFeatures = function (array, fragment) {
-    array.offer.features.forEach(function (FeatureEl) {
+    array.offer.features.forEach(function (featureElement) {
       var feature = document.createElement('span');
-      feature.className = 'feature__image feature__image--' + FeatureEl;
+      feature.className = 'feature__image feature__image--' + featureElement;
       fragment.appendChild(feature);
     });
   };
