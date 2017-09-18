@@ -35,6 +35,9 @@ window.utils = (function () {
         case 'bungalo':
           return 'Бунгало';
       } return value;
+    },
+    compareRandom: function () {
+      return Math.random() - 0.5;
     }
   };
 })();

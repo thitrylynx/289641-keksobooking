@@ -95,12 +95,11 @@ window.Form = (function () {
     element.min = value;
     element.value = value;
   };
-
   dynamicCorrectRooms(capacity, roomNumber);
   dynamicCorrectGuests(roomNumber, capacity);
   window.synchronizeFields(checkinTime, checkoutTime, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValues);
   window.synchronizeFields(checkoutTime, checkinTime, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValues);
-  window.synchronizeFields(type, price, ['flat', 'bungalo', 'house', 'palace'], [1000, 0, 5000, 10000], syncValueWithMin);
+  window.synchronizeFields(type, price, ['flat', 'bungalo', 'house'], [1000, 0, 10000], syncValueWithMin);
 
   title.addEventListener('input', function (evt) {
     var target = evt.target;
