@@ -5,6 +5,11 @@ window.Form = (function () {
     MIN: 0,
     MAX: 1000000
   };
+  var TYPES = [
+    'flat',
+    'bungalo',
+    'house'
+  ];
   var SYMBOLS = {
     MIN: 30,
     MAX: 100
@@ -14,6 +19,11 @@ window.Form = (function () {
     '2',
     '3',
     '100'
+  ];
+  var MIN_PRICES = [
+    1000,
+    0,
+    10000
   ];
   var GUEST_COUNTS = [
     ['1'],
@@ -73,7 +83,7 @@ window.Form = (function () {
   };
   window.synchronizeFields(checkinTime, checkoutTime, CHECKIN_OR_CHECKOUT_TIME, CHECKIN_OR_CHECKOUT_TIME, syncValues);
   window.synchronizeFields(checkoutTime, checkinTime, CHECKIN_OR_CHECKOUT_TIME, CHECKIN_OR_CHECKOUT_TIME, syncValues);
-  window.synchronizeFields(type, price, ['flat', 'bungalo', 'house'], [1000, 0, 10000], syncValueWithMin);
+  window.synchronizeFields(type, price, TYPES, MIN_PRICES, syncValueWithMin);
   window.synchronizeFields(roomNumber, capacity, ROOMS, GUEST_COUNTS, syncValueWithOptions);
 
   title.addEventListener('input', function (evt) {
