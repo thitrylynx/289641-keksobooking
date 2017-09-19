@@ -9,18 +9,18 @@ window.Form = (function () {
     MIN: 30,
     MAX: 100
   };
-  var ROOMS = {
-    ONE: '1',
-    TWO: '2',
-    THREE: '3',
-    HUNDRED: '100'
-  };
-  var GUEST_COUNTS = {
-    ZERO: '0',
-    ONE: '1',
-    TWO: '2',
-    THREE: '3'
-  };
+  var ROOMS = [
+    '1',
+    '2',
+    '3',
+    '100'
+  ];
+  var GUEST_COUNTS = [
+    ['1'],
+    ['1', '2'],
+    ['1', '2', '3'],
+    ['0']
+  ];
   var CHECKIN_OR_CHECKOUT_TIME = [
     '12:00',
     '13:00',
@@ -52,46 +52,6 @@ window.Form = (function () {
   // 3 комнаты — «для 2-х, 1-го или 3-х гостей»
   // 100 комнат — «не для гостей»
   //
-  var getRoomsByGuest = function (guest, room) {
-    if (guest === GUEST_COUNTS.ONE && room === ROOMS.HUNDRED) {
-      return ROOMS.ONE;
-    }
-    if (guest === GUEST_COUNTS.TWO && room !== ROOMS.TWO && room !== ROOMS.THREE) {
-      return ROOMS.TWO;
-    }
-    if (guest === GUEST_COUNTS.THREE) {
-      return ROOMS.THREE;
-    }
-    if (guest === GUEST_COUNTS.ZERO) {
-      return ROOMS.HUNDRED;
-    }
-    return room;
-  };
-  var dynamicCorrectRooms = function (guest, room) {
-    guest.addEventListener('change', function () {
-      room.value = getRoomsByGuest(guest.value, room.value);
-    });
-  };
-  var getGuestByRooms = function (room, guest) {
-    if (room === ROOMS.ONE && guest !== GUEST_COUNTS.ONE) {
-      return GUEST_COUNTS.ONE;
-    }
-    if (room === ROOMS.TWO && guest !== GUEST_COUNTS.ONE && guest !== GUEST_COUNTS.TWO) {
-      return GUEST_COUNTS.TWO;
-    }
-    if (room === ROOMS.THREE && guest === GUEST_COUNTS.ZERO) {
-      return GUEST_COUNTS.THREE;
-    }
-    if (room === ROOMS.HUNDRED) {
-      return GUEST_COUNTS.ZERO;
-    }
-    return guest;
-  };
-  var dynamicCorrectGuests = function (room, guest) {
-    room.addEventListener('change', function () {
-      guest.value = getGuestByRooms(room.value, guest.value);
-    });
-  };
   var syncValues = function (element, value) {
     element.value = value;
   };
@@ -99,11 +59,22 @@ window.Form = (function () {
     element.min = value;
     element.value = value;
   };
-  dynamicCorrectRooms(capacity, roomNumber);
-  dynamicCorrectGuests(roomNumber, capacity);
+  var syncValueWithOptions = function (element, value) {
+    var optionElements = [].slice.call(element.querySelectorAll('option'));
+    optionElements.forEach(function (option) {
+      var indexValue = value.indexOf(option.value);
+      if (indexValue > -1) {
+        option.disabled = false;
+        option.selected = indexValue === 0;
+      } else {
+        option.disabled = true;
+      }
+    });
+  };
   window.synchronizeFields(checkinTime, checkoutTime, CHECKIN_OR_CHECKOUT_TIME, CHECKIN_OR_CHECKOUT_TIME, syncValues);
   window.synchronizeFields(checkoutTime, checkinTime, CHECKIN_OR_CHECKOUT_TIME, CHECKIN_OR_CHECKOUT_TIME, syncValues);
   window.synchronizeFields(type, price, ['flat', 'bungalo', 'house'], [1000, 0, 10000], syncValueWithMin);
+  window.synchronizeFields(roomNumber, capacity, ROOMS, GUEST_COUNTS, syncValueWithOptions);
 
   title.addEventListener('input', function (evt) {
     var target = evt.target;
