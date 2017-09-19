@@ -24,7 +24,7 @@
         </select></label>
         <label><select name="housing_price" id="housing_price" class="tokyo__filter">
           <option value="any" selected>Любая</option>
-          <option value="middle" selected>10000 - 50000&#x20bd;</option>
+          <option value="middle">10000 - 50000&#x20bd;</option>
           <option value="low">до 10000&#x20bd;</option>
           <option value="high">от 50000&#x20bd;</option>
         </select></label>
@@ -123,7 +123,7 @@
         <div class="form__panel">
           <div class="form__element  form__element--wide">
             <label for="title">Заголовок объявления</label>
-            <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка, например" minlength="30" maxlength="100" required>
+            <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка, например" required>
           </div>
           <div class="form__row">
             <div class="form__element">
@@ -153,10 +153,10 @@
             <div class="form__element">
               <label for="capacity">Количество мест</label>
               <select id="capacity" name="capacity">
-                <option value="3">для 3 гостей</option>
-                <option value="2">для 2 гостей</option>
+                <option value="3" disabled>для 3 гостей</option>
+                <option value="2" disabled>для 2 гостей</option>
                 <option value="1" selected>для 1 гостя</option>
-                <option value="0">не для гостей</option>
+                <option value="0" disabled>не для гостей</option>
               </select>
             </div>
           </div>
@@ -168,7 +168,7 @@
         <div class="form__panel">
           <div class="form__element  form__element--wide">
             <label for="address">Адрес</label>
-            <input id="address" name="address" placeholder="Перетащите маркер, чтобы выбрать адрес" type="text" required readonly>
+            <input id="address" name="address" value="x: 637, y: 394" type="text" required readonly>
           </div>
           <div class="form__row">
             <div class="form__element">
@@ -279,7 +279,6 @@
   </div>
 </template>
 <script src="./js/utils.js"></script>
-<script src="./js/debounce.js"></script>
 <script src="./js/backend.js"></script>
 <script src="./js/filters.js"></script>
 <script src="./js/pin.js"></script>

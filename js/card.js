@@ -5,9 +5,9 @@ window.Card = (function () {
   var offerPanel = document.getElementById('offer-dialog');
   var offerPanelClose = document.querySelector('.dialog__close');
   var renderOfferFeatures = function (array, fragment) {
-    array.offer.features.forEach(function (FeatureEl) {
+    array.offer.features.forEach(function (featureElement) {
       var feature = document.createElement('span');
-      feature.className = 'feature__image feature__image--' + FeatureEl;
+      feature.className = 'feature__image feature__image--' + featureElement;
       fragment.appendChild(feature);
     });
   };
@@ -17,7 +17,7 @@ window.Card = (function () {
     var dialogImage = document.querySelector('.dialog__title > img');
     panelElement.querySelector('.lodge__title').textContent = offer.offer.title;
     panelElement.querySelector('.lodge__address').textContent = offer.offer.address;
-    panelElement.querySelector('.lodge__price').innerHTML = offer.offer.price + '&#x20bd;/ночь';
+    panelElement.querySelector('.lodge__price').textContent = offer.offer.price + '₽/ночь';
     panelElement.querySelector('.lodge__type').textContent = window.utils.translate(offer.offer.type);
     panelElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + offer.offer.guests + ' гостей в ' + offer.offer.rooms + ' комнатах';
     panelElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + offer.offer.checkin + ', ' + 'выезд до ' + offer.offer.checkout;

@@ -5,22 +5,37 @@ window.Form = (function () {
     MIN: 0,
     MAX: 1000000
   };
+  var TYPES = [
+    'flat',
+    'bungalo',
+    'house'
+  ];
   var SYMBOLS = {
     MIN: 30,
     MAX: 100
   };
-  var ROOMS = {
-    ONE: '1',
-    TWO: '2',
-    THREE: '3',
-    HUNGRED: '100'
-  };
-  var GUESTS = {
-    ZERO: '0',
-    ONE: '1',
-    TWO: '2',
-    THREE: '3'
-  };
+  var ROOMS = [
+    '1',
+    '2',
+    '3',
+    '100'
+  ];
+  var MIN_PRICES = [
+    1000,
+    0,
+    10000
+  ];
+  var GUEST_COUNTS = [
+    ['1'],
+    ['1', '2'],
+    ['1', '2', '3'],
+    ['0']
+  ];
+  var CHECKIN_OR_CHECKOUT_TIME = [
+    '12:00',
+    '13:00',
+    '14:00'
+  ];
   var form = document.querySelector('.notice__form');
   var title = document.querySelector('#title');
   var price = document.querySelector('#price');
@@ -35,7 +50,6 @@ window.Form = (function () {
   var setDefaultSettings = function () {
     form.reset();
     title.value = '';
-    address.value = '';
     type.value = 'flat';
     price.type = 'number';
     price.value = 1000;
@@ -48,46 +62,6 @@ window.Form = (function () {
   // 3 комнаты — «для 2-х, 1-го или 3-х гостей»
   // 100 комнат — «не для гостей»
   //
-  var getRoomsByGuest = function (guest, room) {
-    if (guest === GUESTS.ONE && room === ROOMS.HUNGRED) {
-      return ROOMS.ONE;
-    }
-    if (guest === GUESTS.TWO && room !== ROOMS.TWO && room !== ROOMS.THREE) {
-      return ROOMS.TWO;
-    }
-    if (guest === GUESTS.THREE) {
-      return ROOMS.THREE;
-    }
-    if (guest === GUESTS.ZERO) {
-      return ROOMS.HUNGRED;
-    }
-    return room;
-  };
-  var dynamicCorrectRooms = function (guestEl, roomEl) {
-    guestEl.addEventListener('change', function () {
-      roomEl.value = getRoomsByGuest(guestEl.value, roomEl.value);
-    });
-  };
-  var getGuestByRooms = function (room, guest) {
-    if (room === ROOMS.ONE && guest !== GUESTS.ONE) {
-      return GUESTS.ONE;
-    }
-    if (room === ROOMS.TWO && guest !== GUESTS.ONE && guest !== GUESTS.TWO) {
-      return GUESTS.TWO;
-    }
-    if (room === ROOMS.THREE && guest === GUESTS.ZERO) {
-      return GUESTS.THREE;
-    }
-    if (room === ROOMS.HUNGRED) {
-      return GUESTS.ZERO;
-    }
-    return guest;
-  };
-  var dynamicCorrectGuests = function (roomEl, guestEl) {
-    roomEl.addEventListener('change', function () {
-      guestEl.value = getGuestByRooms(roomEl.value, guestEl.value);
-    });
-  };
   var syncValues = function (element, value) {
     element.value = value;
   };
@@ -95,12 +69,22 @@ window.Form = (function () {
     element.min = value;
     element.value = value;
   };
-
-  dynamicCorrectRooms(capacity, roomNumber);
-  dynamicCorrectGuests(roomNumber, capacity);
-  window.synchronizeFields(checkinTime, checkoutTime, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValues);
-  window.synchronizeFields(checkoutTime, checkinTime, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValues);
-  window.synchronizeFields(type, price, ['flat', 'bungalo', 'house', 'palace'], [1000, 0, 5000, 10000], syncValueWithMin);
+  var syncValueWithOptions = function (element, value) {
+    var optionElements = [].slice.call(element.querySelectorAll('option'));
+    optionElements.forEach(function (option) {
+      var indexValue = value.indexOf(option.value);
+      if (indexValue > -1) {
+        option.disabled = false;
+        option.selected = indexValue === 0;
+      } else {
+        option.disabled = true;
+      }
+    });
+  };
+  window.synchronizeFields(checkinTime, checkoutTime, CHECKIN_OR_CHECKOUT_TIME, CHECKIN_OR_CHECKOUT_TIME, syncValues);
+  window.synchronizeFields(checkoutTime, checkinTime, CHECKIN_OR_CHECKOUT_TIME, CHECKIN_OR_CHECKOUT_TIME, syncValues);
+  window.synchronizeFields(type, price, TYPES, MIN_PRICES, syncValueWithMin);
+  window.synchronizeFields(roomNumber, capacity, ROOMS, GUEST_COUNTS, syncValueWithOptions);
 
   title.addEventListener('input', function (evt) {
     var target = evt.target;
@@ -114,7 +98,7 @@ window.Form = (function () {
   });
   address.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value.length < 1) {
+    if (target.value.length === '') {
       target.setCustomValidity('Обязательное поле');
     } else {
       target.setCustomValidity('');
@@ -151,8 +135,8 @@ window.Form = (function () {
   });
 
   return {
-    setAddress: function (val) {
-      address.value = val;
+    setAddress: function (value) {
+      address.value = value;
     }
   };
 })();

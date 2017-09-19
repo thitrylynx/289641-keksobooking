@@ -21,9 +21,9 @@ window.utils = (function () {
         }
       }
     },
-    removeChild: function (parent) {
-      while (parent.children.length !== 1) {
-        parent.removeChild(parent.children[1]);
+    removeChild: function (value) {
+      while (value.children.length !== 1) {
+        value.removeChild(value.children[1]);
       }
     },
     translate: function (value) {
@@ -35,6 +35,19 @@ window.utils = (function () {
         case 'bungalo':
           return 'Бунгало';
       } return value;
+    },
+    compareRandom: function () {
+      return Math.random() - 0.5;
+    },
+    debounce: function (value) {
+      var DEBOUNCE_INT = 500; // 30 сек
+      var lastTimeout = 0;
+      return function () {
+        if (lastTimeout) {
+          clearTimeout(lastTimeout);
+        }
+        lastTimeout = setTimeout(value, DEBOUNCE_INT);
+      };
     }
   };
 })();
